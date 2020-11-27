@@ -1,6 +1,7 @@
 import requests
 import bs4 as bs
 import urllib.request
+import os
 
 url = str(input('URL: '))
 
@@ -24,6 +25,6 @@ for img in imgs:
 print('Anzahl Bilder auf Seite: ' + str(len(links)))
 
 for i in range(len(links)):
-    filename = 'img{}.png'.format(i)
+    filename = 'data\\out\\img{}.png'.format(i)
     urllib.request.urlretrieve(links[i], filename)
     print('Fertig')
