@@ -4,22 +4,23 @@ import time
 from datetime import datetime
 import pandas as pd
 import json
+import lxml
 
 
 df = pd.DataFrame()
 
-for seite in range(0,2):
+for seite in range(1,2):
     
     print("Loop " + str(seite) + " startet.")
-
     
     l=[]
 
     try:
         
-        soup = bs.BeautifulSoup(urllib.request.urlopen("https://www.immobilienscout24.de/Suche/S-2/P-" + 
-        str(seite)+"/Wohnung-Kauf").read(), 'lxml')
-        print("Aktuelle Seite: "+"https://www.immobilienscout24.de/Suche/S-2/P-"+str(seite)+"/Wohnung-Kauf/archiv")
+        print("https://www.immobilienscout24.de/Suche/S-2/P-" + str(seite) + "/Wohnung-Kauf")
+        soup = bs.BeautifulSoup(urllib.request.urlopen("https://www.immowelt.de/liste/muenchen-altstadt-lehel/wohnungen/mieten?geoid=10809162000017&zip=80333&sort=relevanz").read(), 'lxml')
+        print("Aktuelle Seite: "+"https://www.immobilienscout24.de/Suche/S-2/P-" + str(seite) + "/Wohnung-Kauf/archiv")
+        
         for paragraph in soup.find_all("a"):
 
             if r"/expose/" in str(paragraph.get("href")):
@@ -74,4 +75,4 @@ for seite in range(0,2):
 
 print("FERTIG!")
 
-df.to_csv("Wohnung_Kauf-" + str( datetime.now())[:19].replace(":","").replace(".","").replace("-",".") + ".csv",sep=";",decimal=",",encoding = "utf-8",index_label="timestamp")  
+#df.to_csv("Wohnung_Kauf-" + str( datetime.now())[:19].replace(":","").replace(".","").replace("-",".") + ".csv",sep=";",decimal=",",encoding = "utf-8",index_label="timestamp")  
