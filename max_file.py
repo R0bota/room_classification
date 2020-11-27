@@ -10,4 +10,4 @@ def col(n):
     print(n)
     col(n)
 
-col(10)
+col(1234556564332110)
