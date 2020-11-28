@@ -37,7 +37,7 @@ if(prosPath.endswith("/")== False):
 
 
 listOfFiles = os.listdir(dirPath)
-pattern = "*.jpg"
+pattern = "*.png"
 
 # loop over files
 for name in listOfFiles:
