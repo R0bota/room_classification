@@ -1,24 +1,33 @@
 import cv2
+import os
+import fnmatch
 
-size = (400, 400)
+# size of export images
+size = (400, 400) 
 
 print("OpenCV version:")
 print(cv2.__version__)
 
-print("Load image")
-img = cv2.imread("/Users/maximilian/Desktop/Test_Bild.jpg")
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# set path for import and export
+dirPath = "/Users/maximilian/Desktop/img/"
+prosPath = "/Users/maximilian/Desktop/img_pros/"
+listOfFiles = os.listdir(dirPath)
 
-height, width = img.shape[:2]
-print("image has width of " + str(width) + " and height of " + str(height))
+pattern = "*.jpg"
 
-cv2.imshow("grayscale Image", gray)
+# loop over files
+for name in listOfFiles:
+    if fnmatch.fnmatch(name, pattern):
+        print(name)
+        path = dirPath + name
+        img = cv2.imread(path)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-cv2.imwrite("/Users/maximilian/Desktop/Test_Bild_gray.jpg", gray) 
+        height, width = img.shape[:2]
+        print("image has width of " + str(width) + " and height of " + str(height))
+        
+        path = prosPath + name
+        resized = cv2.resize(gray, size, interpolation = cv2.INTER_AREA)
+        cv2.imwrite(path, resized)
 
-resized = cv2.resize(gray, size, interpolation = cv2.INTER_AREA)
-cv2.imwrite("/Users/maximilian/Desktop/Test_Bild_gray.jpg", resized) 
-
-
-#cv2.waitKey(0)
-#cv2.destroyAllWindows()
+print("done")
