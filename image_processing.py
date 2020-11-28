@@ -3,7 +3,7 @@ import os
 import fnmatch
 import yaml
 import os.path
-from os import path
+#from os import path
 from random import random
 
 #load config file
@@ -18,14 +18,12 @@ with open('config.yaml') as f:
     size = (data["imageWidth"], data["imageHeight"])
 
 #check if directory exists
-print("main path exists: " + str(path.isdir(mainPath)))
-if(path.exists(mainPath) == False):
+print("main path exists: " + str(os.path.isdir(mainPath)))
+if(os.path.exists(mainPath) == False):
     exit()
 
 if(mainPath.endswith("/")== False):
     mainPath = mainPath + "/"
-
-
 
 def listdirs(p):
     return [d for d in os.listdir(p) if os.path.isdir(os.path.join(p, d)) and d.startswith(".") == False]
@@ -40,16 +38,11 @@ print("Folders found in main directory: " + str(listOfDir))
 print("search for " + imageType + "-files")
 pattern = "*." + imageType
 
-
-
-
-
 # loop over each subfolder
 for dir in listOfDir:
     print("current directory:" + dir)
 
     # check if export directory has right structure
-    print("Path Vali exist"  + str(os.path.exists(validationPath + dir)))
     if(os.path.exists(validationPath + dir) == False):
         #create dir
         os.mkdir(validationPath + dir)
@@ -60,7 +53,6 @@ for dir in listOfDir:
 
     #get files in directory
     listOfFiles = listfiles(mainPath + dir)
-    print(listOfFiles)
 
     for file_name in listOfFiles:
         path = mainPath + dir + "/" + file_name
