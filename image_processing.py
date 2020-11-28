@@ -64,7 +64,7 @@ for dir in listOfDir:
 
     for file_name in listOfFiles:
         path = mainPath + dir + "/" + file_name
-        print(path)
+        
         img = cv2.imread(path)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
