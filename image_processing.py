@@ -3,7 +3,6 @@ import os
 import fnmatch
 import yaml
 import os.path
-#from os import path
 from random import random
 
 #load config file
