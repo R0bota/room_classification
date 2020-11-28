@@ -1,8 +1,8 @@
-city: "kassel"
+city: "berlin"
 country: "Germany"
 radius: 20
 immoType: "wohnungen"
-intend: "kaufen"
+intend: "mieten"
 bjmi: "" #Bauhjahr ab
 bjma: "" #Bauhjahr bis
 roomi: "" #Zimmer ab

@@ -26,8 +26,10 @@ with open('config_crawler.yaml') as f:
 
 
 # Build Query String
-url = 'https://www.immowelt.de/liste/' + \
+urlIni = 'https://www.immowelt.de/liste/' + \
     city + '/' + immoType + '/' + intend + '?'
+
+url = urlIni
 
 if radius:
     geolocator = Nominatim(user_agent="joreka27")
@@ -89,11 +91,11 @@ opener.add_headers = [{'User-Agent': 'Mozilla'}]
 urllib.request.install_opener(opener)
 
 rawMain = requests.get(url).text
-soup = bs.BeautifulSoup(rawMain, 'html.parser')
+soupMain = bs.BeautifulSoup(rawMain, 'html.parser')
 
 # ********************************
 #   Get Number of search results
-scripts = soup.find_all('script')
+scripts = soupMain.find_all('script')
 
 for script in scripts:
     if 'utag_data' in str(script):
@@ -105,87 +107,69 @@ for script in scripts:
 print('Suchergebnis :' + str(search_result))
 
 
-cps = math.floor(search_result / 20)
-print("Seiten: " + str(cps))
+number_pages = math.floor(search_result / 20)
+print("Seiten: " + str(number_pages))
 
 
 result = input("Bilder runterladen?")
 
 if result == 'J':
 
-    for i in range(cps):
-
+    for page in range(number_pages):
         # build url to access one page after another
-        if i != 0:
-            url = url + '&cp=' + str(i+1)
+        if page != 0:
+            # not first page
+            url = urlIni + '&cp=' + str(page+1)
+        print("Main URL: " + url)
 
         opener = urllib.request.build_opener()
         opener.add_headers = [{'User-Agent': 'Mozilla'}]
         urllib.request.install_opener(opener)
-        raw = requests.get(url).text
-        soup = bs.BeautifulSoup(raw, 'html.parser')
-        # driver.get(url)
-        # html = driver.page_source
-        # html = driver.page_source
-        # soup = BeautifulSoup(url, "html5lib")
+        rawList = requests.get(url).text
+        soupList = bs.BeautifulSoup(rawList, 'html.parser')
 
         # find all divs in html of respective page
-        rel_div = soup.find_all(lambda tag: tag.name == 'div')
+        div_List = soupList.find_all(lambda tag: tag.name == 'div')
 
         # oid contains id (=link) of all adds on main page
-        oid = []
+        oids = []
 
-        for div in rel_div:
+        for div in div_List:
+            # Go through all divs looking for 'data-oid'
             if div.get('data-oid') != None:
-                oid.append(div.get('data-oid'))
+                # oids.append(div.get('data-oid'))
+                # build url for every add (=subpage)
 
-        url_subs = []
+                url_sub = 'https://www.immowelt.de/expose/' + \
+                    div.get('data-oid')
+                print("crawl: " + url_sub)
 
-        # build url for every add 8=subpage)
-        for i in range(len(oid)):
-            url_subs.append('https://www.immowelt.de/expose/' + oid[i])
+                # crawl images on sub pages
+                rawSub = requests.get(url_sub).text
+                soupSub = bs.BeautifulSoup(rawSub, 'html.parser')
 
-        print(url_subs)
+                # identify relevant section for picture content in html
+                metas = soupSub.find_all('meta')
 
-        for u in url_subs:
+                links = []
+                for meta in metas:
 
-            # crawl images on sub pages
+                    prop = meta.get('property')
 
-            # initial webcrawler stuff
-            opener = urllib.request.build_opener()
-            opener.add_headers = [{'User-Agent': 'Mozilla'}]
-            urllib.request.install_opener(opener)
-            raw = requests.get(u).text
-            soup = bs.BeautifulSoup(raw, 'html.parser')
+                    if str(prop) == 'og:image':
+                        content = meta.get('content')
+                        # only real pictures (no logos)
+                        if str(content)[0:5] == 'https':
+                            links.append(str(content))
+                        else:
+                            print('no valid picture')
 
-            # driver.get(url)
-            # html = driver.page_source
-            # html = driver.page_source
-            # soup = BeautifulSoup(url, "html5lib")
+                print('Anzahl Bilder auf Seite: ' + str(len(links)))
 
-            # identify relevant section for picture content in html
-            metas = soup.find_all('meta')
-
-            links = []
-
-            for meta in metas:
-
-                prop = meta.get('property')
-                content = meta.get('content')
-
-                if str(prop) == 'og:image':
-
-                    # only real pictures (no logos)
-                    if str(content)[0:5] == 'https':
-                        links.append(str(content))
-                    else:
-                        print('no valid picture')
-
-            print('Anzahl Bilder auf Seite: ' + str(len(links)))
-
-            for i in range(len(links)):
-                # save files as image to local drive
-                filename = 'data\\out\\img_' + u[-7:] + '_' + str(i) + '.png'
-                urllib.request.urlretrieve(links[i], filename)
+                for i in range(len(links)):
+                    # save files as image to local drive
+                    filename = 'data\\out\\img_' + \
+                        div.get('data-oid') + '_' + str(i) + '.png'
+                    urllib.request.urlretrieve(links[i], filename)
 else:
     print('Ciao')
