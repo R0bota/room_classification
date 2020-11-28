@@ -15,9 +15,17 @@ with open('config.yaml') as f:
     print("size of processed images :")
     print(size)
 
+
 # set path for import and export path
 dirPath = input("Import path : ")
 prosPath = input("Export path: ")
+
+#check if directory exists
+
+if(path.exists(dirPath) == False or path.exists(prosPath) == False):
+    print("Import path exists: " + str(path.isdir(dirPath)))
+    print("Export path exists: " + str(path.isdir(dirPath)))
+    exit()
 
 # add / if nessassary
 if(dirPath.endswith("/")== False):
@@ -26,11 +34,7 @@ if(dirPath.endswith("/")== False):
 if(prosPath.endswith("/")== False):
     prosPath = prosPath + "/"
 
-#check if directory exists
-print("Path exists: " + str(path.exists('dirPath')))
-if(path.exists('dirPath') == False or path.exists('prosPath') == False):
-    print("Path not found")
-    exit()
+
 
 listOfFiles = os.listdir(dirPath)
 pattern = "*.jpg"
