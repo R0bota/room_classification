@@ -9,7 +9,8 @@ from os import path
 #load config file
 with open('config.yaml') as f:
     data = yaml.load(f, Loader=yaml.FullLoader)
-
+    imagePath = data["imagePath"]
+    imageType = data["imageType"]
     # size of export images
     size = (data["imageWidth"], data["imageHeight"])
     print("size of processed images :")
@@ -34,10 +35,10 @@ if(dirPath.endswith("/")== False):
 if(prosPath.endswith("/")== False):
     prosPath = prosPath + "/"
 
-
-
 listOfFiles = os.listdir(dirPath)
-pattern = "*.png"
+
+print("search for " + imageType + "-files")
+pattern = "*." + imageType
 
 # loop over files
 for name in listOfFiles:
