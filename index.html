@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        img {
+            height: 400px;
+            width: 400px;
+        }
+
+        h1 {
+
+            margin: 20px;
+
+
+        }
+
+        .imagePath {
+            width: 150px;
+        }
+
+        .divInline {
+            display: inline-block;
+            float: left;
+        }
+
+        .buttonStart {
+            display: inline-block;
+            border: none;
+            padding: 1rem 2rem;
+            margin: 5px;
+            text-decoration: none;
+            background: #0069ed;
+            color: #ffffff;
+            font-family: sans-serif;
+            font-size: 1rem;
+            line-height: 1;
+            cursor: pointer;
+            text-align: center;
+            transition: background 250ms ease-in-out, transform 150ms ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        .formLabeling {
+            margin-left: 30%;
+            margin-top: 10px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            align-content: center;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        function start() {
+            document.getElementById('myImage')
+                .src = "C:/Users/johan/Entwicklung/phython/Webcrawler/room_classification/data/out/2q9ws4d_1.png";
+
+
+
+            // document.getElementById('message')
+            //     .innerHTML = "Quick and Dirty Image Labeling";
+        }
+
+        function label() {
+            // var object = new ActiveXObject("Scripting.FileSystemObject");
+            // var file = object.GetFile("C:/Users/johan/Entwicklung/phython/Webcrawler/room_classification/data/out/2q9ws4d_1.png");
+            // file.Move("C:/Users/johan/Entwicklung/phython/Webcrawler/room_classification/data/out/balcony//");
+            // var label = event.getSource().getName();
+            // $.ajax({
+            //     type: 'GET',
+            //     url: "http://0.0.0.0:5000/move",
+            //     // data: {
+            //     //     "from": "fromPath",
+            //     //     "to": "toPath",
+            //     //     "label": "label"
+            //     // }
+            // }).done(function (o) {
+            //     // do something
+            //     console.log("Finished")
+            // });
+
+            // // file.name = "01.png";
+
+            // // document.getElementById('myImage')
+            // //     .src = "C:\Users\johan\Entwicklung\phython\Webcrawler\room_classification\data\out\2q9ws4d_2.png";
+
+            // var text = "Test";
+
+            // var xhr = new XMLHttpRequest();
+            // xhr.open("GET", "image_labelling.py?text=" + text, true);
+            // xhr.responseType = "JSON";
+            // xhr.onload = function (e) {
+            //     var arrOfStrings = JSON.parse(xhr.response);
+            // }
+            // xhr.send();
+
+        }
+
+
+
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <h3>
+                    Quick and (very) Dirty Image Labeling
+                </h3>
+                <img id="myImage" src="">
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+
+    <div id="formLabeling" class="formLabeling" sytle="display: inline">
+
+        <label for="imagePath">Root folder:</label>
+        <input name="imagePath" id="imagePath" class="imagePath" /><br>
+        <label for="imagePath">Destination folder:</label>
+        <input name="imagePath" id="imagePath" />
+        <button onclick=start(); class="buttonStart">
+            Start
+        </button>
+    </div>
+    <div class="divInline" style="margin-left: 25%;">
+        <ul style="list-style-type:none;">
+            <li>
+                <button class="btn btn-success" name="bath_room" style="margin: 5px" onclick=label();>
+                    Bad
+                </button> <br>
+                <button class="btn btn-success" name="living_room" style="margin: 5px" onclick=label();>
+                    Wohnzimmer
+                </button><br>
+                <button class="btn btn-success" name="sleeping_room" style="margin: 5px" onclick=label();>
+                    Schlafzimmer
+                </button> <br>
+                <button class="btn btn-success" name="empty_room" style="margin: 5px" onclick=label();>
+                    Leeres Zimmer
+                </button> <br>
+                <button class="btn btn-success" name="balcony" style="margin: 5px" onclick=label();>
+                    Balkon
+                </button>
+            </li>
+        </ul>
+    </div>
+    <div class="divInline">
+        <ul style="list-style-type:none;">
+            <li>
+                <button class="btn btn-success" name="house" style="margin: 5px" onclick=label();>
+                    Haus
+                </button> <br>
+                <button class="btn btn-success" name="kitchen" style="margin: 5px" onclick=label();>
+                    Küche
+                </button> <br>
+                <button class="btn btn-success" name="floor_plan" style="margin: 5px" onclick=label();>
+                    Grundriss
+                </button> <br>
+                <button class="btn btn-success" name="corridor" style="margin: 5px" onclick=label();>
+                    Flur
+                </button> <br>
+                <button class="btn btn-success" name="other" style="margin: 5px" onclick=label();>
+                    Sonstiges
+                </button> <br>
+            </li>
+        </ul>
+    </div>
+
+
+
+    <!-- <div class="button">
+        <button class="btn btn-warning" onclick=before();>
+            bath_room
+        </button>
+        <button class="btn btn-success" onclick=afterr();>
+            living_room
+        </button>
+        <button class="btn btn-success" onclick=afterr();>
+            sleeping_room
+        </button>
+        <button class="btn btn-success" onclick=afterr();>
+            empty_room
+        </button>
+        <button class="btn btn-success" onclick=afterr();>
+            kitchen
+        </button>
+        <button class="btn btn-success" onclick=afterr();>
+            Schlafzimmer
+        </button>
+    </div> -->
+</body>
+
+</html>

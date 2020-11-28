@@ -1,0 +1,13 @@
+city: "kassel"
+country: "Germany"
+radius: 20
+immoType: "wohnungen"
+intend: "kaufen"
+bjmi: "" #Bauhjahr ab
+bjma: "" #Bauhjahr bis
+roomi: "" #Zimmer ab
+rooma: "" #Zimmer bis
+wflmi: "" #Wohnfläche ab
+wflma: "" #Wohnfläche bis
+primi: "" #Preis ab
+prima: "" #Preis bis
