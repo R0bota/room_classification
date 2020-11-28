@@ -1,18 +1,38 @@
 import cv2
 import os
 import fnmatch
+import yaml
 
-# size of export images
-size = (400, 400) 
+import os.path
+from os import path
 
-print("OpenCV version:")
-print(cv2.__version__)
+#load config file
+with open('config.yaml') as f:
+    data = yaml.load(f, Loader=yaml.FullLoader)
 
-# set path for import and export
-dirPath = "/Users/maximilian/Desktop/img/"
-prosPath = "/Users/maximilian/Desktop/img_pros/"
+    # size of export images
+    size = (data["imageWidth"], data["imageHeight"])
+    print("size of processed images :")
+    print(size)
+
+# set path for import and export path
+dirPath = input("Import path : ")
+prosPath = input("Export path: ")
+
+# add / if nessassary
+if(dirPath.endswith("/")== False):
+    dirPath = dirPath + "/"
+
+if(prosPath.endswith("/")== False):
+    prosPath = prosPath + "/"
+
+#check if directory exists
+print("Path exists: " + str(path.exists('dirPath')))
+if(path.exists('dirPath') == False or path.exists('prosPath') == False):
+    print("Path not found")
+    exit()
+
 listOfFiles = os.listdir(dirPath)
-
 pattern = "*.jpg"
 
 # loop over files
