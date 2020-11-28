@@ -1,0 +1,3 @@
+mainPath: "../data/out/"
+exportPath: "../data/classified/"
+imageType: "png"
