@@ -1,6 +1,6 @@
-city: "berlin"
+city: "straubing"
 country: "Germany"
-radius: 20
+radius: 5
 immoType: "wohnungen"
 intend: "mieten"
 bjmi: "" #Bauhjahr ab

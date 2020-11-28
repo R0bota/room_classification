@@ -6,7 +6,7 @@ import os.path
 from random import random
 
 #load config file
-with open('config.yaml') as f:
+with open('config\\config.yaml') as f:
     data = yaml.load(f, Loader=yaml.FullLoader)
 
     mainPath = data["mainPath"]

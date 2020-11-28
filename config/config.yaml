@@ -1,7 +1,7 @@
-imageWidth: 400
-imageHeight: 400
+imageWidth: 224
+imageHeight: 224
 imageType: "jpg"
-mainPath: "data/out/"
+mainPath: "data/classified/"
 trainPath: "data/train/"
 validationPath: "data/validation/"
 ratioTtoV: 0.8

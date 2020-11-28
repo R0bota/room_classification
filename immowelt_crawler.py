@@ -7,7 +7,7 @@ import math
 
 
 # load config file
-with open('config_crawler.yaml') as f:
+with open('config\\config_crawler.yaml') as f:
     data = yaml.load(f, Loader=yaml.FullLoader)
 
     city = data["city"]
