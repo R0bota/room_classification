@@ -30,7 +30,7 @@ train_generator = train_datagen.flow_from_directory(
     target_size = (224, 224),
     color_mode = "rgb",
     batch_size = 32,
-    class_mode = "binary",
+    class_mode = "categorical",
     shuffle = True,
     seed = 42
 )
@@ -41,7 +41,7 @@ valid_generator = valid_datagen.flow_from_directory(
     target_size = (224, 224),
     color_mode = "rgb",
     batch_size = 32,
-    class_mode = "binary",
+    class_mode = "categorical", #binary
     shuffle = True,
     seed = 42
 )
@@ -65,7 +65,7 @@ x = layers.Dense(512, activation = 'relu')(x)
 x = layers.Dropout(0.5)(x)
 
 # Add a final sigmoid layer for classification
-x = layers.Dense(1, activation = 'sigmoid')(x)
+x = layers.Dense(3, activation = 'sigmoid')(x)
 
 model = tf.keras.models.Model(base_model.input, x)
 
@@ -100,6 +100,8 @@ model.evaluate_generator(
     generator = valid_generator,
     steps = STEP_SIZE_VALID
 )
+
+test_datagen = ImageDataGenerator()
 
 test_generator = test_datagen.flow_from_directory(
     directory = os.path.join(base_dir, 'test\\'),
