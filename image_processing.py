@@ -57,9 +57,9 @@ for dir in listOfDir:
         path = mainPath + dir + "/" + file_name
         
         img = cv2.imread(path)
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        #gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-        resized = cv2.resize(gray, size, interpolation = cv2.INTER_AREA)
+        #resized = cv2.resize(img, size, interpolation = cv2.INTER_AREA)
         
         #check if export folder exist
         if random() > ratioTtoV:
@@ -67,5 +67,5 @@ for dir in listOfDir:
         else:
             path = trainPath + dir + "/" + file_name
         
-        cv2.imwrite(path, resized)
+        cv2.imwrite(path, img)
 
