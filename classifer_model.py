@@ -7,6 +7,7 @@ import numpy as np
 from tensorflow.keras.preprocessing.image import ImageDataGenerator 
 from keras.applications.vgg16 import decode_predictions
 from sys import platform
+import os
 
 #check OS
 print("Checking OS...")
@@ -18,6 +19,10 @@ elif platform == "darwin":
 elif platform == "win32":
     print("You`re using Windows")
     sep = '\\'
+
+def listfiles(p):
+    return [d for d in os.listdir(p) if os.path.isfile(os.path.join(p, d)) and d.startswith(".") == False]
+
 
 base_dir = 'data' + sep
 model_dir = 'model' + sep
@@ -41,9 +46,10 @@ labels = dict((v,k) for k,v in labels.items())
 print(labels)
 
 pics = (glob.glob(base_dir + 'out_test' + sep + '*.png'))
-i = 1
 for pic in pics:
     print(pic)
+    pic_name = os.path.basename(pic)
+    
     img = tf.keras.preprocessing.image.load_img(pic, target_size=(224, 224))
     imgs = np.asarray(img)
     img = np.expand_dims(imgs, axis = 0)
@@ -55,6 +61,5 @@ for pic in pics:
 
     if output[0][predicted_class_indices] > 0.99:
         print(pic + " is " + str(predictions[0]))
-        #print(base_dir + 'out_test' + sep + str(predictions[0]) + str(i) + '.png')
-        os.rename(pic, base_dir + 'out_test' + sep + str(predictions[0]) + str(i) + '.png')
-        i += 1
+        print(base_dir + 'out_test' + sep + str(predictions[0]) + '_' + pic_name)
+        os.rename(pic, base_dir + 'out_test' + sep + str(predictions[0]) + '_' + pic_name)
