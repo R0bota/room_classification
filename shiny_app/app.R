@@ -42,7 +42,7 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   
-  config = read_yaml(file = "../shiny_config.yaml")
+  config = read_yaml(file = "../config/shiny_config.yaml")
 
   mainPath = config$mainPath
   exportPath = config$exportPath
