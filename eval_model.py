@@ -11,7 +11,7 @@ base_dir = 'data\\'
 model_dir = 'model\\'
 train_dir = os.path.join(base_dir, 'train')
 
-model = keras.models.load_model(os.path.join(model_dir, 'model3'))
+model = keras.models.load_model(os.path.join(model_dir, 'model4'))
 
 train_datagen = ImageDataGenerator()
 train_generator = train_datagen.flow_from_directory(
@@ -37,13 +37,13 @@ for pic in pics:
     output = model.predict(img, batch_size = 1)
     predicted_class_indices = np.argmax(output, axis = 1)
     predictions = [labels[k] for k in predicted_class_indices]
-    print(output[0][0])
+    print(output[0][predicted_class_indices])
     #print(predictions[0])
 
     if output[0][predicted_class_indices] > 0.99:
         print(pic + " is " + str(predictions[0]))
-        plt.imshow(imgs)
-        plt.show()
+        #plt.imshow(imgs)
+        #plt.show()
 
 """ test_datagen = ImageDataGenerator()
 
