@@ -36,7 +36,7 @@ def listfiles(p):
 # specify directory paths
 data_dir = 'data\\'
 model_dir = 'model\\'
-model_id = '2020-11-29_12-46-54_144487'
+model_id = '2020-11-29_17-49-28_265344'
 
 model = keras.models.load_model(os.path.join(model_dir, model_id))
 
@@ -44,7 +44,7 @@ dbfile = open(model_dir + model_id + '.pkl', 'rb')
 labels = pickle.load(dbfile) 
 dbfile.close()
 
-pics = (glob.glob(data_dir + 'classified\\corridor' + sep + '*.png'))
+pics = (glob.glob(data_dir + 'classified\\floor_plan' + sep + '*.png'))
 
 sc = []
 cat = []
