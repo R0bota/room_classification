@@ -1,6 +1,6 @@
-city: "straubing"
+city: "hamburg"
 country: "Germany"
-radius: 5
+radius: 25
 immoType: "wohnungen"
 intend: "mieten"
 bjmi: "" #Bauhjahr ab

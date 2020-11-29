@@ -111,7 +111,7 @@ number_pages = math.floor(search_result / 20)
 print("Seiten: " + str(number_pages))
 
 
-result = input("Bilder runterladen?")
+result = input("Bilder runterladen? J/N")
 
 if result == 'J':
 
