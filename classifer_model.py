@@ -16,7 +16,7 @@ model = keras.models.load_model(os.path.join(model_dir, 'model4'))
 
 train_datagen = ImageDataGenerator()
 train_generator = train_datagen.flow_from_directory(
-    directory = out_dir,
+    directory = train_dir,
     target_size = (224, 224),
     color_mode = "rgb",
     batch_size = 32,
@@ -42,5 +42,6 @@ for pic in pics:
 
     if output[0][predicted_class_indices] > 0.99:
         print(pic + " is " + str(predictions[0]))
-        os.rename(pic, base_dir + 'out_test\\' + output[0][predicted_class_indices] + i)
+        print(base_dir + 'out_test\\' + str(predictions[0]) + str(i) + '.png')
+        os.rename(pic, base_dir + 'out_test\\' + str(predictions[0]) + str(i) + '.png')
         i += 1
