@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 from tensorflow import keras
 
 # specify directories for train and validation
-base_dir = 'data\\out\\'
+base_dir = 'data\\'
 model_dir = 'model\\'
 train_dir = os.path.join(base_dir, 'train')
 validation_dir = os.path.join(base_dir, 'validation')
@@ -34,6 +34,8 @@ train_generator = train_datagen.flow_from_directory(
     shuffle = True,
     seed = 42
 )
+
+print(train_generator.class_indices)
 
 # Flow validation images in batches of 20 using test_datagen generator
 valid_generator = valid_datagen.flow_from_directory(
@@ -65,7 +67,7 @@ x = layers.Dense(512, activation = 'relu')(x)
 x = layers.Dropout(0.5)(x)
 
 # Add a final sigmoid layer for classification
-x = layers.Dense(3, activation = 'sigmoid')(x)
+x = layers.Dense(len(train_generator.class_indices), activation = 'sigmoid')(x)
 
 model = tf.keras.models.Model(base_model.input, x)
 
@@ -82,7 +84,7 @@ vgghist = model.fit_generator(
     epochs = 3
 )
 
-model.save(os.path.join(model_dir, 'model3'))
+model.save(os.path.join(model_dir, 'model4'))
 
 #evaluate model
 model.summary()
@@ -96,11 +98,11 @@ plt.xlabel("Epoch")
 plt.legend(["Accuracy","Validation Accuracy","loss","Validation Loss"])
 plt.show()
 
-model.evaluate_generator(
+""" model.evaluate_generator(
     generator = valid_generator,
     steps = STEP_SIZE_VALID
 )
-
+ """
 test_datagen = ImageDataGenerator()
 
 test_generator = test_datagen.flow_from_directory(

@@ -7,7 +7,7 @@ import numpy as np
 from tensorflow.keras.preprocessing.image import ImageDataGenerator 
 from keras.applications.vgg16 import decode_predictions
 
-base_dir = 'data\\out\\'
+base_dir = 'data\\'
 model_dir = 'model\\'
 train_dir = os.path.join(base_dir, 'train')
 
@@ -37,7 +37,7 @@ for pic in pics:
     output = model.predict(img, batch_size = 1)
     predicted_class_indices = np.argmax(output, axis = 1)
     predictions = [labels[k] for k in predicted_class_indices]
-    #print(output[0][0])
+    print(output[0][0])
     #print(predictions[0])
 
     if output[0][predicted_class_indices] > 0.99:
