@@ -5,13 +5,16 @@
 # load packages
 import numpy as np
 import os
-import tensorflow as tf 
+import pickle
+import tensorflow as tf
+import matplotlib.pyplot as plt
 from tensorflow.keras.preprocessing.image import ImageDataGenerator 
 from tensorflow.keras import layers 
 from tensorflow.keras import Model
 from tensorflow.keras.applications.vgg16 import VGG16
-import matplotlib.pyplot as plt
 from tensorflow import keras
+from itertools import chain
+from datetime import datetime
 
 # specify directories for train and validation
 base_dir = 'data\\'
@@ -84,7 +87,23 @@ vgghist = model.fit_generator(
     epochs = 3
 )
 
-model.save(os.path.join(model_dir, 'model4'))
+# save category labels as dict to pickle
+labels = (train_generator.class_indices)
+labels = dict((v,k) for k,v in labels.items())
+lab = ''.join(list(chain(*labels.values())))
+lab = lab.replace("room", "")
+
+# save model witch descriptive model id
+timestamp = str(datetime.now())
+timestamp = timestamp.replace(":", "-")
+timestamp = timestamp.replace(" ", "_")
+timestamp = timestamp.replace(".", "_")
+
+a_file = open(os.path.join(model_dir, timestamp) + ".pkl", "wb")
+pickle.dump(labels, a_file)
+a_file.close()
+
+model.save(os.path.join(model_dir, timestamp))
 
 #evaluate model
 model.summary()
