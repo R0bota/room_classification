@@ -4,10 +4,12 @@ import urllib.request
 import yaml
 from geopy.geocoders import Nominatim
 import math
+import json
+import csv
 
 
 # load config file
-with open('config_crawler.yaml') as f:
+with open('config/config_crawler.yaml') as f:
     data = yaml.load(f, Loader=yaml.FullLoader)
 
     city = data["city"]
@@ -115,12 +117,16 @@ result = input("Bilder runterladen?")
 
 if result == 'J':
 
+    
     for page in range(number_pages):
         # build url to access one page after another
         if page != 0:
             # not first page
             url = urlIni + '&cp=' + str(page+1)
         print("Main URL: " + url)
+
+        if page == 2:
+            exit()
 
         opener = urllib.request.build_opener()
         opener.add_headers = [{'User-Agent': 'Mozilla'}]
@@ -136,10 +142,13 @@ if result == 'J':
 
         for div in div_List:
             # Go through all divs looking for 'data-oid'
+            if div.get('hardfact') != None:
+                print(div.get('hardfact'))
+
             if div.get('data-oid') != None:
+                oid = div.get('data-oid')
                 # oids.append(div.get('data-oid'))
                 # build url for every add (=subpage)
-
                 url_sub = 'https://www.immowelt.de/expose/' + \
                     div.get('data-oid')
                 print("crawl: " + url_sub)
@@ -150,6 +159,51 @@ if result == 'J':
 
                 # identify relevant section for picture content in html
                 metas = soupSub.find_all('meta')
+                div_List_sub = soupList.find_all(lambda tag: tag.name == 'div')
+
+
+                #mydivs = soupSub.findAll("div", {"class": "merkmale"})
+                #print(mydivs)
+                mydivs = soupSub.findAll("div", {"datacontent iw_right"})
+                price = mydivs[0].text
+                print("Kaltmiete " + str(price))
+
+                mydivs = soupSub.find("div", {"id": "divImmobilie"})
+
+                #mydivs = soupSub.find("ul", {"class": "textlist_icon_03 padding_top_none"})
+
+                
+                for ultag in soupSub.find_all('ul', {'class': 'textlist_icon_03 padding_top_none'}):
+                    for litag in ultag.find_all('li'):
+
+                        if "Ausstattung" in litag.text:
+                            print(litag.text)
+                            test_text = str(oid) + litag.text
+                            with open("test.txt", "w") as text_file:
+                                text_file.write(test_text)
+
+                            with open('employee_file2.csv', mode='w') as csv_file:
+                                fieldnames = ['oid', 'price', 'standard']
+                                writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+
+                                writer.writeheader()
+                                writer.writerow({'oid': oid, 'price':price, 'standard': litag.text})
+                                
+                            
+                            exit()
+
+                #for mydiv in mydivs:
+                    #tdTags = mydiv.find("ul", {"class": "textlist_icon_03 padding_top_none "})
+                    #print(tdTags)
+                    #for tag in tdTags:
+                    #    print(tag.text)
+
+                    
+
+                
+                
+                
+                
 
                 links = []
                 for meta in metas:
