@@ -107,7 +107,7 @@ def save_file(name, content):
     with open(os.path.join(UPLOAD_DIRECTORY, name), "wb") as fp:
         fp.write(base64.decodebytes(data))
     # Classify the file
-    classifyImg(1)
+    classifyImg()
 
 
 def uploaded_files():
@@ -139,7 +139,7 @@ def update_output(uploaded_filenames, uploaded_file_contents):
         # Display lst file of files array
         return [html.Li(html.Img(src=app.get_asset_url(files[len(files) - 1])))]
 
-def classifyImg(image):
+def classifyImg():
     #function to classify image
     print("classify uploaded Image")
     sc = []
