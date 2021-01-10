@@ -7,9 +7,52 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+import glob
+import pickle
+import keras
+import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+import pandas as pd
+import plotly.express as px
+#import seaborn as sns
+import matplotlib as mpl
+from keras.preprocessing import image
+from tensorflow.keras.preprocessing.image import ImageDataGenerator 
+from keras.applications.vgg16 import decode_predictions
+from itertools import chain
+from datetime import datetime
+from sys import platform
+from bokeh.plotting import output_file, show
 
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    try:
+        # Currently, memory growth needs to be the same across GPUs
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        logical_gpus = tf.config.experimental.list_logical_devices('GPU')
+        print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+    except RuntimeError as e:
+        # Memory growth must be set before GPUs have been initialized
+        print(e)
 
+# specify directory paths
+data_dir = 'data\\'
+model_dir = 'model\\'
+model_id = '2020-11-29_12-46-54_144487'
 UPLOAD_DIRECTORY = "assets"
+
+# specify threshold of confidence
+th = 0.9
+
+#load model
+model = keras.models.load_model(os.path.join(model_dir, model_id))
+dbfile = open(model_dir + model_id + '.pkl', 'rb')      
+labels = pickle.load(dbfile) 
+dbfile.close()
+
+
 
 if not os.path.exists(UPLOAD_DIRECTORY):
     os.makedirs(UPLOAD_DIRECTORY)
@@ -64,6 +107,7 @@ def save_file(name, content):
     with open(os.path.join(UPLOAD_DIRECTORY, name), "wb") as fp:
         fp.write(base64.decodebytes(data))
     # Classify the file
+    classifyImg(1)
 
 
 def uploaded_files():
@@ -94,6 +138,34 @@ def update_output(uploaded_filenames, uploaded_file_contents):
     else:
         # Display lst file of files array
         return [html.Li(html.Img(src=app.get_asset_url(files[len(files) - 1])))]
+
+def classifyImg(image):
+    #function to classify image
+    print("classify uploaded Image")
+    sc = []
+    cat = []
+    pic_id = []
+    #pic = (glob.glob(UPLOAD_DIRECTORY + '\\' + '*.png'))
+    pics = (glob.glob(UPLOAD_DIRECTORY + '\\' + 'img_2vpyz4u_19.png'))
+    for pic in pics:
+        img = tf.keras.preprocessing.image.load_img(pic, target_size=(224, 224))
+        imgs = np.asarray(img)
+        img = np.expand_dims(imgs, axis = 0)
+        print("predict image")
+        # score image
+        output = model.predict(img, batch_size = 1)
+        predicted_class_indices = np.argmax(output, axis = 1)
+        predictions = [labels[k] for k in predicted_class_indices]
+
+        # only classify if over specified threshold
+        if output[0][predicted_class_indices] < th:
+            predictions[0] = 'unsure'
+            # variable setup for model results
+    
+        print(predictions[0])
+
+
+
 
 
 if __name__ == "__main__":
